@@ -1,121 +1,69 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import { Navigate, NavLink, Route, Routes } from 'react-router-dom'
+import Activities from './components/Activities'
+import Leaderboard from './components/Leaderboard'
+import Teams from './components/Teams'
+import Users from './components/Users'
+import Workouts from './components/Workouts'
+import octofitLogo from '../../../docs/octofitapp-small.png'
+import { apiBaseUrl, hasCodespaceApi } from './api'
 import './App.css'
 
+const routes = [
+  { path: '/users', label: 'Users', title: 'Athlete Profiles', element: <Users /> },
+  { path: '/teams', label: 'Teams', title: 'Teams', element: <Teams /> },
+  { path: '/activities', label: 'Activities', title: 'Activity Log', element: <Activities /> },
+  { path: '/leaderboard', label: 'Leaderboard', title: 'Leaderboard', element: <Leaderboard /> },
+  { path: '/workouts', label: 'Workouts', title: 'Workout Suggestions', element: <Workouts /> },
+]
+
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="app-shell">
+      <header className="app-header">
+        <div className="brand-lockup">
+          <img src={octofitLogo} width="56" height="56" alt="Octofit Tracker" />
+          <div>
+            <p className="eyebrow">Octofit Tracker</p>
+            <h1>Training Command Center</h1>
+          </div>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+        <nav className="nav nav-pills app-nav" aria-label="Primary navigation">
+          {routes.map((route) => (
+            <NavLink className="nav-link" key={route.path} to={route.path}>
+              {route.label}
+            </NavLink>
+          ))}
+        </nav>
+      </header>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+      <main className="app-main">
+        <div className="api-status">
+          <span className={`status-dot ${hasCodespaceApi ? 'is-live' : 'is-local'}`}></span>
+          <span>API: {apiBaseUrl}</span>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+        {!hasCodespaceApi && (
+          <div className="alert alert-info mb-4" role="status">
+            Set VITE_CODESPACE_NAME to use the forwarded Codespaces API URL. Falling back to localhost.
+          </div>
+        )}
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+        <Routes>
+          <Route path="/" element={<Navigate to="/users" replace />} />
+          {routes.map((route) => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={
+                <section className="resource-section">
+                  <h2 className="section-title">{route.title}</h2>
+                  {route.element}
+                </section>
+              }
+            />
+          ))}
+        </Routes>
+      </main>
+    </div>
   )
 }
 
