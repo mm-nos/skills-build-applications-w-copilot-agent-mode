@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { connectDatabase, MONGODB_URI } from '../database.js';
+import { connectDatabase, MONGODB_URI } from '../config/database.js';
 import { Activity, LeaderboardEntry, Team, User, Workout } from '../models.js';
 
 const seedDescription = 'Seed the octofit_db database with test data';
