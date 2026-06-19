@@ -7,11 +7,11 @@ import usersRouter from './routes/users.js';
 import workoutsRouter from './routes/workouts.js';
 
 const app = express();
-const PORT = process.env.PORT || 8000;
+const API_PORT = 8000;
 const codespaceName = process.env.CODESPACE_NAME;
 const baseUrl = codespaceName
-  ? `https://${codespaceName}-8000.app.github.dev`
-  : `http://localhost:${PORT}`;
+  ? `https://${codespaceName}-${API_PORT}.app.github.dev`
+  : `http://localhost:${API_PORT}`;
 
 app.use(express.json());
 
@@ -52,6 +52,6 @@ app.use((err: Error, _req: express.Request, res: express.Response, _next: expres
   res.status(500).json({ error: err.message || 'Internal server error' });
 });
 
-app.listen(PORT, () => {
+app.listen(API_PORT, () => {
   console.log(`OctoFit Tracker API running on ${baseUrl}`);
 });
