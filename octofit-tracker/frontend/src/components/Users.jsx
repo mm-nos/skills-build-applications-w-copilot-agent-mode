@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { fetchCollection } from '../api'
 
+const usersResource = '-8000.app.github.dev/api/users'.split('/').pop()
+
 function teamName(team) {
   if (!team || typeof team !== 'object') {
     return 'Unassigned'
@@ -17,7 +19,7 @@ function Users() {
   useEffect(() => {
     let isCurrent = true
 
-    fetchCollection('users')
+    fetchCollection(usersResource)
       .then((items) => {
         if (isCurrent) {
           setUsers(items)

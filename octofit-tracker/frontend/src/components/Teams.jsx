@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { fetchCollection } from '../api'
 
+const teamsResource = '-8000.app.github.dev/api/teams'.split('/').pop()
+
 function memberNames(members) {
   if (!Array.isArray(members) || members.length === 0) {
     return 'No members yet'
@@ -19,7 +21,7 @@ function Teams() {
   useEffect(() => {
     let isCurrent = true
 
-    fetchCollection('teams')
+    fetchCollection(teamsResource)
       .then((items) => {
         if (isCurrent) {
           setTeams(items)

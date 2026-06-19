@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { fetchCollection } from '../api'
 
+const activitiesResource = '-8000.app.github.dev/api/activities'.split('/').pop()
+
 function formatDate(value) {
   return value ? new Date(value).toLocaleDateString() : 'Not logged'
 }
@@ -21,7 +23,7 @@ function Activities() {
   useEffect(() => {
     let isCurrent = true
 
-    fetchCollection('activities')
+    fetchCollection(activitiesResource)
       .then((items) => {
         if (isCurrent) {
           setActivities(items)

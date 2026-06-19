@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { fetchCollection } from '../api'
 
+const workoutsResource = '-8000.app.github.dev/api/workouts'.split('/').pop()
+
 function exerciseList(exercises) {
   if (!Array.isArray(exercises) || exercises.length === 0) {
     return 'No exercises listed'
@@ -17,7 +19,7 @@ function Workouts() {
   useEffect(() => {
     let isCurrent = true
 
-    fetchCollection('workouts')
+    fetchCollection(workoutsResource)
       .then((items) => {
         if (isCurrent) {
           setWorkouts(items)

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { fetchCollection } from '../api'
 
+const leaderboardResource = '-8000.app.github.dev/api/leaderboard'.split('/').pop()
+
 function athleteName(entry) {
   if (entry.displayName || entry.username) {
     return entry.displayName || entry.username
@@ -21,7 +23,7 @@ function Leaderboard() {
   useEffect(() => {
     let isCurrent = true
 
-    fetchCollection('leaderboard')
+    fetchCollection(leaderboardResource)
       .then((items) => {
         if (isCurrent) {
           setLeaders(items)
